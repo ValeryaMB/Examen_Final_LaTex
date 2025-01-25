@@ -1,0 +1,265 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{placeins} 
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{fancyhdr}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+\begin{document}
+\pagestyle{plain}
+\renewcommand{\headrulewidth}{0pt}
+\title{\fontsize{10}{10} \selectfont \text{2010 Second International Conference on Advanced Geographic Information Systems, Applications, and Services} \\[35pt] \fontsize{14pt}{14pt}\selectfont \textbf{ Finding Sites Meeting Compactness and On- and Off-Site Suitability Criteria in Raster Maps}}
+
+\author{
+    \noindent
+    \begin{tabular}{>{\centering\arraybackslash}p{3.2in} >{\centering\arraybackslash}p{3.2in}} % Centrando el contenido en ambas columnas
+    Pablo Vanegas\textsuperscript{1,2}, Dirk Cattrysse\textsuperscript{1} & Anja Wijffels\textsuperscript{3,4}, Jos Van Orshoven\textsuperscript{3} \\[1pt]
+    \textsuperscript{1}\textit{Centre for Industrial Management} & \textsuperscript{3}\textit{Department of Earth and Environmental Sciences} \\
+    \textit{Katholieke Universiteit Leuven} & \textit{Katholieke Universiteit Leuven} \\
+    \textit{Leuven - Belgium} & \textit{Leuven - Belgium} \\
+    \{\textit{Pablo.Vanegas, Dirk.Cattrysse}\}\textit{@cib.kuleuven.be} & \textit{Jos.VanOrshoven@ees.kuleuven.be} \\[1pt]
+    \textsuperscript{2}\textit{Facultad de Ingeniería, Universidad de Cuenca} & \textsuperscript{4}\textit{PROMAS, Universidad de Cuenca} \\
+    \textit{Cuenca - Ecuador} & \textit{Cuenca - Ecuador} \\
+    \textit{Pablo.Vanegas@ucuenca.edu.ec} & \textit{Anja.Wijffels@ucuenca.edu.ec}\\
+    
+\end{tabular} \\[15pt]
+}
+\maketitle
+
+\fancypagestyle{firstpagestyle}{
+    \fancyhf{} 
+    \fancyfoot[C]{\includegraphics[width=\textwidth]{Pie de pagina.jpg}} 
+    \renewcommand{\headrulewidth}{0pt} 
+    \renewcommand{\footrulewidth}{0pt} 
+}
+
+\thispagestyle{firstpagestyle} % Aplica el estilo a la primera página
+
+\begin{abstract}
+This paper presents an evaluation of the Heuristic for Locating Cells (HLC) [1] for identifying optimal sites in raster maps. The optimal sites are the result of a trade-off between the on-site suitability of individual cells, their spatial configuration, and their off-site impact at the watershed outlet. The evaluation is targeted to a case of reforestation in two subbasins within the Tabacay catchment in the southern Andes of Ecuador. The case is set up to locate a predefined number of cells 1) forming a compact patch, 2) minimizing sediment reaching the watersheds outlet, and 3) maximizing cell-specific performance, i.c. carbon sequestration and monetary income as a result of reforestation with pine trees. The evaluation confirms that the heuristic is capable of identifying high quality compact patches of cells with maximal on-site performance while minimizing sediment delivery.
+\end{abstract}
+
+\textbf{\textit{Keywords}-Site Location; Site Allocation; Integer Programming; Heuristic; Flow Minimization;}
+
+
+\section{Introduction}
+Environmental conservation and land use planning often require identifying optimal sites fulfilling multiple particular criteria ([2], [3], [4]).\\
+There exist field studies searching for optimal sites where the selection of one site affects the state of the neighboring sites (spatial interaction). In contrast to simulations, this sort of problems require search algorithms for optimality. E.g. in forestation management where decision criteria can be represented by raster maps, the following question regarding sediment flow can arise: where are the best cells to be reforested in order to minimize sediment flow reaching the watershed outlet?. To deal with these type of questions [1] propose a Heuristic for Locating Cells (HLC) fulfilling 3 objectives: 1) forming a compact patch, 2) minimizing sediment flow reaching the outlet of a watershed, and 3) maximizing their intrinsic environmental criteria (e.g. maximizing carbon sequestration, minimizing nitrate leaching).\\
+This paper presents an evaluation of the HLC method in 2 sub-basins within the Tabacay catchment located in the southern Andes of Ecuador. Whereas the next section briefly describes approaches for the site location problem, Section III summarizes the HLC method and describes the data used to evaluate it. Finally, Section IV shows and discusses the results obtained for the two sub-basins within the Tabacay, and Section V draws the conclusions. 
+
+\section{RELATED WORK}
+ Heuristic programming techniques have been developed to solve problems whose solutions each constitute just one point or a small set of points in a very large, and possibly infinite space, the search space [5]. A heuristic is a problem-specific way of directing problem solving, it seeks to obtain good, that is, near-optimal solutions at relatively low computational cost without being able to guarantee the optimality of solutions [6].\\
+ To deal with the problem of generating contiguous and compact districts while providing population equality and retaining jurisdictional boundaries, Mehrotra et al. [7] develop an optimization based heuristic capable of considering many potential districts. The problem is represented with a graph, where each node is associated with the population of a county (unit), and an edge exists when two geographical units are neighbors. A penalty cost is assigned to every potential district, measuring its non-compactness from an ideal district. To explicitly manage the shape in site location problems in raster maps, [8] proposes the Parameterized Region-Growing (PRG) process, which starts from a seed cell. This algorithm is a fusion of two ideas: Simple Region Growing (SRG) and Parameterized Shape-Growing (PSG). PRG combines PSG and SRG through a weighted average of the two scores. Church et al. [3] develop a Patch Growing Process (PGP) 
+ to generate feasible patches with reference to a seed cell. Once the seed patch is defined, the neighbors to the patch are placed on a list in a random order. Each cell in the list is analyzed in terms of the number of edges that it shares with 
+ \clearpage
+ \thispagestyle{fancy}
+\pagestyle{fancy}
+\cfoot{16}
+the current patch (from 1 to 4). The region growing process proposed by [3] is part of the heuristic method described by [2] which identifies near to optimal contiguous and compact patches maximizing the environmental performance achieved by afforestation. This approach is composed by three stages: 1) automatic seeds generation by means of a quadtree based search, 2) region growing in every generated seed, and 3) regions ranking and evaluation.\\
+
+ \section{MATERIALS AND METHODS}
+  The notation and formulation explained in this section are applied by the HLC method to locate a compact patch composed by a given number of cells to be reforested. Reforestation implies modification of sediment flow production, sediment delivery factors, environmental and economical criteria in every selected cell. The first two criteria affect not only a cell itself but also the state of neighboring cells. For modelling this interaction, atree data structure is constructed from a Single Flow Direction (SFD) map. Regarding compactness, this criterion requires a matrix data structure to allocate cells sharing as many borders as possible in order to minimize the total perimeter of the reforested cells forming the target site, i.e. the area is kept constant while the perimeter is minimized. Since nodes of the tree and cells of the matrix refer to the same spatial location, both data structures are combined to minimize sediment flow and maximize compactness simultaneously.
+  
+  Whereas subsection III-A details the data used in this paper and their representation, subsection III-B summarizes the Heuristic for Locating Cells (HLC) [1].\\
+
+\textit{A. Data Description and Problem Representation}\\
+
+Two subbasins within the Tabacay River catchment (78.82 west, 2,68 south), composed of cells of 30 x 30 meters, are selected to test the HLC method. Sub-basin A is made up of 22313 cells and is approximately 20 km2 in size. Sub-basin B is about 14.5 km2, composed of 16021 cells.
+ 
+ The Tabacay river basin is located in the Andes mountains region in the south of Ecuador, is 6650 ha in size, and the altitude range from 2490 m to 3730 m above sea level. The inhabitants are mainly devoted to agricultural activities, and the basin is the raw material source for cement production in the Gaup´ an plant. The Tabacay river is a tributary of the Paute river, which in turn is the main source of water for hydro-power generation in Ecuador. The water of the Tabacay river and its tributaries is used to provide drinking water to the Azogues city and the surrounding rural areas. A major problem in this catchment is the high sediment production levels resulting in overall land degradation and a high sediment load in the river and reservoir at the outlet of the Paute watershed. To an important extent this is due to an uncontrolled land use change from native forest and p\'aramo to agriculture [9]. Sixty three percent (63) of the surface has a slope steeper than 30, but nevertheless agriculturalactivities are omni-present. Reforestation is believed to be able to contribute to the reversal of the trend of increasing land degradation.
+ 
+  \textit{1) Data Description:} Data are prepared in order to select sets of predefined number of cells to be reforested fulfilling 3 objectives: 1) form a compact patch, 2) minimize sediment flow reaching the outlet, and 3) maximize their intrinsic criteria (maximize carbon sequestration and monetary income). Twelve raster maps (matrices) are required for every sub-basin (A and B): 1) Flow Direction, 2) Flow Production, 3) Flow Factor, 4) Breakpoint \#1, 5) Breakpoint \#2, 6) New Flow Production, 7) New Flow Factor, 8) New Breakpoint \#1, 9) New Breakpoint \#2, 10) Carbon Sequestration, 11) Income generation and 12) Location of streams. The background of the first nine maps can be found in [10].\\ 
+
+  \begin{enumerate}
+     \item [i]
+  \textit{Flow Direction (FD)} is based on elevation maps.FD uses the SFD (Single Flow Direction or D8) model, computing the downslope flow directions by inspecting the 3-by-3 window around the current cell (Moore’s Neighborhood). The SFD method assigns to the current cell a unique flow direction, i.e. the one toward the steepest downslope neighbor.
+    
+  \item [ii] \textit{Flow Production (j)} is a general term associated to levels of any kind of locally produced flow when no reforestation activities have been performed. In the problem at hand, flow production refers to sediment at cell j. Sediment production under pine in every cell is derived from the equations established by Molina et al. [11]. These equations make use of fractional vegetation cover and the presence of argillaceous rocks and were developed for small catchments within the Paute river basin [9]. Twelve sediment production values are obtained by the combination of six classes identified for fractional vegetation cover and two classes for lithology. In the present work, flow production (j) equals the amount of sediment produced in cell j in an initial year (year 0) without considering any forestation process.
+
+ \item [iii] \textit{Flow Factor (j)} is a multiplier factor for delivering flow from cell j to its steepest neighbor. In problems where geographic relief plays an important role, as in the problem at hand, the slope can act as j.
+
+\item [iv] \textit{Breakpoint \#1 (j,1)} is the first breakpoint of a piece wise linear convex function in the cell j modelling the non-linear nature of sediment transport. Breakpoints are required to define linear segments within the flow delivery functions. The first quartile value in the sediment production map for year-0 is used as an estimation for Breakpoint \#1.
+
+  \item [v] \textit{Breakpoint \#2 (j,2)} is the second breakpoint of the sediment flow delivery function. The second quartile in the sediment production map for year-0 is used to estimate Breakpoint \#2.
+  
+  \item[vi] \textit{New Flow Production (j), New Flow Factor(j), New Breakpoint \#1 (j,3), and New Breakpoint \#2 (j,4)} are the new values for Flow Production, Flow Factor, Breakpoint \#1, and Breakpoint \#2 if cell j was selected to be reforested in year 0,i.e. new parameters of the piecewise linear convex function. New Flow Production equals the sediment that would be produced in every cell after 10 years of reforesta
+tion with pine trees. New Breakpoint \#1 and New Breakpoint \#2 are estimated as before by means of the first and second quartiles, but this time taking into consideration the sediment production map after 10 years of reforestation with pine. The first quartile of the normalized slopes in the map is taken as an estimation for the new New flow factor in every cell.
+
+ \item[vii] \textit{Carbon sequestration and Income generation are two on-site suitability or performance attributes of each cell (u).}  Values are available for year-0, i.e. before reforestation, and for 10 years after reforestation. Carbon sequestration is defined as the change in Biomass Organic Carbon (BOC). The assumption is that tree biomass (wood,leaves, roots) contains 50\% of BOC. BOC is inferred from site quality. Three growth curves were established and four site quality classes identified. For each site quality class, a mean BOC value is derived from observed dendrometric parameters (diameter at breast height and total tree height) stored in a tree growth database consisting of (i) field measurements, and (ii) data from the Ecuadorian state intervention institutions(CREA and PROFAFOR) [9]. Computation of the income generated is based on the economic value of wood products and in the agricultural opportunity cost. It expresses the expected change in income when agriculture or fallow is replaced by forest. Income due to forestation is estimated from the commercial volumes deduced from the dendometric parameters (base area, shape factor and commercial height) in the tree growth database [9]. In addition, commercial wood volumes are calculated and a referential package of wood products is defined in order to improve the income estimation. The difference between income from forestry after 10 years of forestation and income from assumed continued agriculture is applied in the present work. 
+
+ \item[viii] \textit{Streams} are represented by a binary grid where cells
+ with a value 1 are riverbeds. \\[20pt]
+ 
+ Cells state change when they are reforested (selected as part of the optimal solution) for minimizing sediment load. In this sense, the first 5 criteria reflect the initial state in year-0. The criteria specified in vi and vii represent a new state (in year 10). Figure 1a and 1b show a simplified
+  \end{enumerate}
+
+\begin{figure}
+\centerline{\includegraphics[width=\columnwidth]{Figura 1.jpg}}
+\label{fig}
+\end{figure}
+\FloatBarrier
+\thispagestyle{fancy}
+\pagestyle{fancy}
+\cfoot{17}
+
+ example of the first 5 criteria.\\
+ 
+ \textit{2) Problem Representation:} According to the HLC, locating the best cells to be reforested in order to minimize sediment flow requires the specification of an outlet cell
+ where the total flow converges. Since the Flow Direction (FD) map assigns a unique path from each cell toward the steepest downslope neighbor, HLC uses a tree representation
+ of this map in which the root node equals the outlet cell.
+ Figure 1a shows a schematic representation of the five initial maps applied to minimize flow. The underlying tree structure shown in figure 1b is constructed from the Flow Direction map. Each node in the tree corresponds with a cell location, therefore cell values in each one of the 12 raster maps (matrices) can be referenced from the corresponding node; e.g. nodes of the tree presented in figure 1b are associated with flow factor between node i and node j (yi,j), and flow production (i) in node i.\\
+ 
+ \textit{B. Heuristic Solution Method for Locating Cells Fulfilling Compactness and Flow Minimization Criteria (HLC)}\\
+ 
+ HLC [1] is based on the combination of two heuristic methods: \textit{1) Multiple-Criteria Heuristic solution method for Site Location (HMSL) [2] and 2) Cellular Automata Based Heuristic Solution Method for Minimizing Flow (CAMF)} [12].\\
+ 
+ \textit{1) Multiple-Criteria Heuristic Solution Method for Site Location (HMSL):} In a first stage HMSL generates seed patches (seed generation), each one consisting of a set
+ of individual cells with maximal intrinsic multiple criteria suitability. To achieve this objective, goal programming with intervals (Charnes and Collomb, 1972; Ignizio, 1974) is
+ applied. Since these individual cells are marked by a value 1, a quadtree based search is applied in order to identify Maximum Initial Compact Patches (MICPs = squared area
+   \newpage
+ \thispagestyle{fancy}
+\pagestyle{fancy}
+\cfoot{18}
+ composed by a set of nxnmarked cells) which will act as seeds. The region growing algorithm proposed by [3] is applied to every generated seed patch (MICP). A composite
+ suitability is computed for each neighboring cell. The best X\%ofneighboring cells are added to the seed patch to form a new patch which is used in a next iteration to add more
+ cells until a predefined number (0) is achieved. \\
+
+ Once several patches (candidate solutions) have been generated, the best solution is selected through a multicriteria ranking procedure. Each candidate solution is represented as a binary map, where cells equal to 1 are part of the final patch, and cells with a value 0 are excluded.
+ The accumulated composite suitability for every patch R is computed with the first two terms of equation 1; 0 is the total number of cells that are part of the final patch, p is the total number of Intrinsic suitability Criteria (IC) taken into account, gi the number of edges that the ith cell shares with adjacent cells equal to 1 in the binary solution map, and f(ki) is the normalized value for the kth intrinsic suitability in the cell i. A constant value (c =0.25) is applied to normalize gi \\
+
+ \textit{2) Cellular Automata Based Heuristic Solution Method for Minimizing Flow (CAMF):} The CAMF method is divided in two main processes: 1) Computation of initial Effective sediment flow Accumulation (EA) in every node within the tree representation, and 2) location of the best nodes to be reforested for minimizing the flow reaching the root (outlet). The heuristic makes use of a list of nodes sorted according to the levels in the tree for computing the EA in every node.\\ 
+ 
+ According to the representation in figures 2a and 2b, sediment flow which is Effectively Accumulated (EA) in nodes without children (leaves) equals flow produced in the node itself (i) without taking into consideration any other contribution or interaction. On the other hand, EA for nodes other than leaves is computed level by level, from bottom to top, considering flow production (sediment) in node i (i) and the flow delivered by its children. Therefore, CAMF computes the EA from the leaves until the root is reached. In the piecewise linear convex function in figure 2b, the X axis corresponds with the EA at node j. The initial EA is computed under the assumption that every node is not reforested (initial state). A detailed explanation and implementation of the main functions of the CAMF method can be found in [13].\\
+ 
+ \textit{Difference at root node}\\
+ When any node j is selected to be reforested it produces a difference in Effectively Accumulated (EA) flow at the outlet (root node). Computation of this difference requires defining the amount of flow leaving the node j under two
+
+ \begin{figure}
+\centerline{\includegraphics[width=\columnwidth]{Figura 2.jpg}}
+\end{figure}
+\FloatBarrier
+
+ states: 1) Initial State (not reforested): when the node keeps its original piecewise linear convex function breakpoints (ai,1,ai,2), flow factor (yi) and flow production (ai);
+ and 2) Modified State (reforested): when ai,1,ai,2, yi, ai are replaced by ai,3,ai,4, Yi, Bi respectively. Once the difference between the initial and modified state is computed
+ for the node i, this difference is subtracted from its parent’s Effective Accumulation (EA). Updating the parent’s EA considers also the current state (either reforested or not)
+ present here. From the selected node, this process is iterated for each node following the path until the root is reached. In this way the difference in flow entering the root is calculated.\\
+
+ \textit{List of Differences}\\
+ The effect (difference) on sediment load at the root is computed for every node in the tree and stored in a sorted list (listDifferences). The top nodes in this list are selected to be effectively reforested. The processes for computing the List of Differences and for selecting the Best Nodes are iterated until a given number (0) of nodes (cells) are selected to be reforested.\\
+ 
+ \textit{3) Combination of HMSL and CAMF:} The Heuristic method for Locating Cells (HLC) keeps the same structure as HMSL, but two modifications are included: 1) a map with normalized initial suitability values for sediment flow minimization is computed and included as one of the criteria in the seed generation stage, 2) every time an X\% percentage of cells is included as part of the target patch in the region growing phase, the suitability map for flow minimization is updated treating the selected cells in the patch as reforested. Details of the HLC method can be found in [\ref{(1)}].
+
+\begin{equation}
+\begin{aligned}
+suit_R &= \omega_N \cdot \left( \frac{\sum_{i=1}^{\varphi} g_i \cdot c}{\varphi} \right) + \\
+&\quad \left( \frac{\sum_{i=1}^{\varphi} \sum_{k=1}^{\rho} \omega_k \cdot f(k_i)}{\varphi} \right) + \\
+&\quad \omega_f \ast \frac{\eta - fr}{\eta - \zeta}
+\end{aligned}
+\end{equation}
+
+\thispagestyle{fancy}
+\pagestyle{fancy}
+\cfoot{18}
+
+ \begin{figure}
+\centerline{\includegraphics[width=9cm]{Tabla1.jpg}}
+ \end{figure}
+ 
+ \FloatBarrier
+ \begin{table}[h]
+\centering
+\caption{WEIGHTS TO SELECT 50, 100 AND 300 CELLS IN SUB-BASINS A AND B}
+\end{table}
+
+  Equation 1 is applied to evaluate every generated patch. In addition to compactness and intrinsic criteria, sediment flow minimization is included in the third term of equation
+ 1. In this equation n and C are respectively the maximum and minimum possible sediment load at root, and fr is the sediment load at the watershed outlet under reforestation
+ conditions. Whereas the maximum load is obtained when zero nodes are reforested, the minimum is achieved when 0 nodes are reforested without considering neither intrinsic criteria nor compactness. The total composite suitability is calculated for every patch, and the one corresponding with the highest value is chosen as the best.
+
+ \section{RESULTS AND DISCUSSION}
+ The two selected sub-basins show pronounced differences. Sub-basin A is located close to the outlet of the entire Tabacay catchment, it has high levels of erosion, is influenced by the presence of human settlements, and the Gaup an cement production plant is located here. On the other hand, subbasin B is better preserved, sediment levels are lower, and it is more far from the Tabacay outlet.\\
+ 
+ The tests are carried out in order to locate a predefined number of cells: 1) forming a compact patch, 2) minimizing sediment load at the watershed outlet, and 3) maximizing
+ carbon sequestration and income generated. The testing weights in table Ia are applied to select 4.5 ha (50 cells), 9 ha (100 cells), and 27 ha (300 cells) in every sub-basin
+ within the Tabacay. Therefore 30 tests are carried out. The first set (table Ia) assigns the same weight (0.25) to every criterion. Whereas sets 2 and 3 prioritize the compactness
+ criterion, sets 4 and 5 prioritize sediment flow minimization. Table Ib summarizes the inputs to the HLC: 1) initial data at year 0, and 2) data achieved after 10 years if reforestation is performed at year 0.\\
+ 
+ The objective values in table II are computed according to equation 1 and the shape index according to equation 2. Since Taxicab Geometry seems to be the most compatible
+ with raster information, this is applied to compute the perimeter in equation 2. On the other hand, the Euclidean Geometry will systematically generate larger shape indexes
+ than those based on Taxicab. Therefore making use of Euclidean distances implies that the shape index would have more influence on the evaluation of patches built by small amounts of cells.\\
+ \thispagestyle{fancy}
+\pagestyle{fancy}
+\cfoot{19}
+ Left hand side of table II shows the results obtained for the sub-basin A, where the number of candidate solutions range from 75 to 122. HLC applied to sub-basin A behaves
+ similarly when selecting 50, 100, or 300 cells. More compact areas are achieved with tests S2 and S3, i.e. when high weights are assigned to the compactness criterion. egarding flow minimization the smallest amount of sediment load at the outlet of sub-basin A is achieved with high weights assigned to this criterion. As can be seen in table II, the highest objective values are obtained when high weights are assigned to ompactness. This can be explained by the fact that when a cell is selected to be eforested, every side shared with other selected cells contributes with 0.25 to the suitability of the cell with regard to compactness.
+
+ \begin{equation}
+    SI=\frac{\sqrt{area}}{0.282 * perimeter}
+\end{equation}
+
+  For sub-basin B the number of candidate solutions (20 to 22) is smaller than for sub-basin A (75-122). Consequently, the computation time required to reach a final solution is much lower. Sub-basin A is more heterogeneous, i.e. more information is present there, sub-basin B is more homogeneous. Sub-basin B is much better preserved, i.e. its vegetation is more homogeneously distributed (see figure 3). Therefore, since sub-basin B is producing much less sediment the difference in Effective Accumulation (EA) at its outlet can be very low with respect to the maximum amount of achievable sediment. This explains why flow minimization in sub-basin B follows a different pattern in some tests. When selecting 300 and 50 cells, the EA at the outlet is not the lowest in the tests ssigning the highest weights to the sediment minimization criterion. Homogeneity and low
+ sediment levels can lead to a situation where not necessarily the best cell to minimize sediment are selected although a high weight is assigned to this criterion. The selection can be eventually determined by the on-site attributes. \\
+ On the other hand, when the number of cells to be reforested is large (e.g., 300 cells in sub-basin B, table II), the difference between the EA at the outlet and the maximum
+ amount of sediment flow (n) will be very high. According to the evaluation function (equation 1), the former situation will produce a high suitability of the patches regarding flow minimization, and in turn the objective values will be also high. Another important aspect to analyze is the distance of the selected patches to the riverbeds and to the sub-basins outlet. Tests for sub-basin A show that the resulting patches are closer to the riverbeds than the patches in sub-basin B. Nevertheless, in both cases the selected patches are sources of high amounts of sediment.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\columnwidth]{Tabla 2.jpg}} 
+ \end{figure} 
+ 
+ \begin{figure}[htbp]
+ \centerline{\includegraphics[width=\columnwidth]{Figura 3.jpg}} 
+ \end{figure}
+ 
+ \section{CONCLUSIONS}
+ The Heuristic solution method of Vanegas et al. (2009) [1] for Locating a predefined number of Cells (HLC) has been tested in a case of identifying potential sites to be
+ reforested in two sub-basins within the Tabacay catchment, meeting compactness criteria on the one hand and both onsite and off-site suitability criteria on the other hand. The
+ results show that the HLC method is able to locate compact patches of predefined number of cells for which reforestation is expected to result in maximal carbon sequestration and
+ income generation while minimizing sediment reaching the outlet of the tested basins.
+ Despite these findings, further research is needed in order to deeply test the objective function to evaluate the quality of the patches. The effect of the evaluation function will be particularly relevant in regions with low levels of sediment production, with little spatial heterogeneity, and when large numbers of cells are considered for reforestation.
+ 
+\thispagestyle{fancy}
+\pagestyle{fancy}
+\cfoot{20}
+
+\begin{thebibliography}{00}
+\bibitem{b1}  P. Vanegas, D. Cattrysse, and J. V. Orshoven, “Compactness and flow minimization requirements in reforestation initiatives: a heuristic solution method,” Submitted.\\
+
+\bibitem{b2} P. Vanegas, D. Cattrysse, and J. V.Orshoven, “Comparing exact and heuristic methods for site location based on multiple attributes: An afforestation application,” \textit{Lecture Notes in Computer Science}, vol. 5072, pp. 389–404, 2008.\\
+
+\bibitem{b3} R. Church, R. Gerrard, M. Gilpin, and P. Stine, “Constructing cell-based habitat patches useful in conservation planning,” \textit{Annals of the Association of American Geographers}, vol. 93, pp. 814–827, 2003.\\
+
+\bibitem{b4} K. Gilbert, D. Holmes, and R. Rosenthal, “A multiobjective discrete optimization model for land allocation,” \textit{Management Science}, vol. 31, pp. 1509–1522, 1985.\\
+
+\bibitem{b5} L. Siklossy and V. Marinov, “Heuristic search vs. exhaustive search,” \textit{in Proceedings of the Second International Joint Conference on Artificial Intelligence}, 1971.\\
+
+\bibitem{b6} M. Dorigo and T. Stutzle, \textit{Ant Colony Optimization}. The MIT Press, 2004.\\
+
+\bibitem{b7} A. Mehrotra and E. Johnson, “An optimization based heuristic for political districting,” \textit{Management Science}, vol. 44, pp. 1100–1114, 1998.\\
+ 
+\bibitem{b8} C. Brookes, “A parameterized region growing program for site allocation on raster suitability maps,” \textit{International Journal of Geographical Information Science}, vol. 11, pp. 375–396, 2001.\\
+ 
+\bibitem{b9} A. Wijffels and J. V. Orshoven, “Contribution of afforestation and reforestation to the enhancement of physical and socioeconomic land performance in the southern andes of ecuador: Assessment, modelling and planning support,” Vlaamse Interuniversitaire Raad (VLIR), Tech. Rep., 2009.\\
+
+\bibitem{b10} P. Vanegas, D. Cattrysse, and J. V. Orshoven, “Integer programming (ip) formulation for minimizing sediment delivery in a watershed by reforestation of optimal sites,” \textit{17th International Conference on Geoinformatics, Fairfax, USA, IEEE},
+ 2009.\\
+ 
+\bibitem{b11} A. Molina, G. Govers, J. Poesen, H. V. Hemelryck, B. D. Bievre, and V.Vanacker, “Environmental factors controlling spatial variation in sediment yield in a central andean mountain area,” \textit{Geomorphology}, vol. 98, p. 176186, 2008.\\
+
+\bibitem{b12} P. Vanegas, D. Cattrysse, and J. V. Orshoven, “Allocating reforestation areas for sediment flow minimization: an integer programming formulation and a heuristic solution method,” Submitted.\\
+ 
+\bibitem{b13} P. Vanegas, D. Cattrysse, and J. V.Orshoven, “Spatial interaction model for locating cells minimizing flow,” Centre for Industrial Management, Tech. Rep., 2009.
+
+\end{thebibliography}
+
+\end{document}
